@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
+import os
 
 def face_detection():
     st.title("Face Detection")
@@ -13,7 +14,9 @@ def face_detection():
     
     # Function to detect faces using Haarcascade
     def detect_faces_haarcascade(image, scale_factor, min_neighbors):
-        face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        # Load Haarcascade from project directory
+        cascade_path = os.path.join('haarcascades', 'haarcascade_frontalface_default.xml')
+        face_detector = cv2.CascadeClassifier(cascade_path)
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         faces = face_detector.detectMultiScale(gray_image, scaleFactor=scale_factor, minNeighbors=min_neighbors)
         return faces
