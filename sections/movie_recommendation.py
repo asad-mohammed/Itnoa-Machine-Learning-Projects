@@ -46,30 +46,33 @@ def movie_recommendation():
         movie_name = st.text_input('**Enter a movie name:** (Press Enter before clicking the recommend button)')
 
     if st.button('Recommend'):
-        list_of_all_titles = movies_data['title'].tolist()
-        find_close_match = difflib.get_close_matches(movie_name, list_of_all_titles)
-        if find_close_match:
-            close_match = find_close_match[0]
-            index_of_the_movie = movies_data[movies_data.title == close_match].index[0]
-            similarity_score = list(enumerate(similarity[index_of_the_movie]))
-            sorted_similar_movies = sorted(similarity_score, key=lambda x: x[1], reverse=True)
-            st.write('Movies suggested for you:')
-            cols = st.columns(5)
-            for i, movie in enumerate(sorted_similar_movies[1:6]):
-                index = movie[0]
-                title_from_index = movies_data.iloc[index]['title']
-                poster_url = get_poster_url(title_from_index)
-                with cols[i]:
-                    if poster_url:
-                        try:
-                            image = Image.open(BytesIO(requests.get(poster_url).content))
-                            st.image(image, caption=title_from_index, use_column_width=True)
-                        except Exception as e:
+        if movie_name:
+            list_of_all_titles = movies_data['title'].tolist()
+            find_close_match = difflib.get_close_matches(movie_name, list_of_all_titles)
+            if find_close_match:
+                close_match = find_close_match[0]
+                index_of_the_movie = movies_data[movies_data.title == close_match].index[0]
+                similarity_score = list(enumerate(similarity[index_of_the_movie]))
+                sorted_similar_movies = sorted(similarity_score, key=lambda x: x[1], reverse=True)
+                st.write('Movies suggested for you:')
+                cols = st.columns(5)
+                for i, movie in enumerate(sorted_similar_movies[1:6]):
+                    index = movie[0]
+                    title_from_index = movies_data.iloc[index]['title']
+                    poster_url = get_poster_url(title_from_index)
+                    with cols[i]:
+                        if poster_url:
+                            try:
+                                image = Image.open(BytesIO(requests.get(poster_url).content))
+                                st.image(image, caption=title_from_index, use_column_width=True)
+                            except Exception as e:
+                                st.write(title_from_index)
+                                st.warning(f"Failed to load image: {e}")
+                        else:
                             st.write(title_from_index)
-                            st.warning(f"Failed to load image: {e}")
-                    else:
-                        st.write(title_from_index)
+            else:
+                st.write('No matching movies found.')
         else:
-            st.write('No matching movies found.')
+            st.warning('Please select or enter a movie name before clicking the recommend button.')
 
 movie_recommendation()
