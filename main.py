@@ -9,13 +9,14 @@ cancer_page = st.Page(page= "sections/cancer_prediction.py", title= "Cancer Pred
 face_page = st.Page(page= "sections/face_detection.py", title= "Face Detection", icon= ":material/person:")
 movie_page = st.Page(page= "sections/movie_recommendation.py", title= "Movie Recommendation", icon= ":material/theaters:")
 music_page = st.Page(page= "sections/music_recommendation.py", title= "Music Recommendation", icon= ":material/music_note:")
+digit_page = st.Page(page= "sections/digit_recognition.py", title= "Digit Recognition", icon= ":material/numbers:")
 
 # Navigation Set Up [With Sections]
 pg = st.navigation(
     {
         "Main": [home_page],
         "Details": [project_info_page],
-        "Projects": [cancer_page, face_page, movie_page, music_page]
+        "Projects": [cancer_page, face_page, movie_page, music_page, digit_page]
     }
 )
 
