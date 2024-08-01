@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import os
+import io
 
 def face_detection():
     st.title("Face Detection")
@@ -44,16 +45,18 @@ def face_detection():
                 image_with_faces = draw_faces(img_array.copy(), faces)
                 st.image(image_with_faces, caption='Detected Faces', use_column_width=True)
 
+                # Convert image to bytes for downloading
+                img_byte_arr = io.BytesIO()
+                Image.fromarray(image_with_faces).save(img_byte_arr, format='PNG')
+                img_byte_arr = img_byte_arr.getvalue()
+
                 # Download option
-                if st.download_button(
+                st.download_button(
                     label="Download Image with Detected Faces",
-                    data=Image.fromarray(image_with_faces).tobytes(),
+                    data=img_byte_arr,
                     file_name="detected_faces_camera.png",
-                    mime="image/png",
-                    key="camera_download_button"
-                ):
-                    result = Image.fromarray(image_with_faces)
-                    result.save("detected_faces_camera.png")
+                    mime="image/png"
+                )
         else:
             st.info("Please capture a photo to detect faces.")
 
@@ -71,16 +74,18 @@ def face_detection():
                 image_with_faces = draw_faces(image_array, faces)
                 st.image(image_with_faces, caption='Detected Faces', use_column_width=True)
 
+                # Convert image to bytes for downloading
+                img_byte_arr = io.BytesIO()
+                Image.fromarray(image_with_faces).save(img_byte_arr, format='PNG')
+                img_byte_arr = img_byte_arr.getvalue()
+
                 # Download option
-                if st.download_button(
+                st.download_button(
                     label="Download Image with Detected Faces",
-                    data=Image.fromarray(image_with_faces).tobytes(),
+                    data=img_byte_arr,
                     file_name="detected_faces_upload.png",
-                    mime="image/png",
-                    key="upload_download_button"
-                ):
-                    result = Image.fromarray(image_with_faces)
-                    result.save("detected_faces_upload.png")
+                    mime="image/png"
+                )
         else:
             st.info("Please upload a photo to detect faces.")
 
