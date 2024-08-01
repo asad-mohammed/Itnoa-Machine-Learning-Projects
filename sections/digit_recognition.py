@@ -6,7 +6,7 @@ from streamlit_drawable_canvas import st_canvas
 
 def digit_recognition():
     # Load the trained model
-    with open('digit_recognition_model.pkl', 'rb') as file:
+    with open('models/digit_recognition_model.pkl', 'rb') as file:
         model = pickle.load(file)
 
     # Function to preprocess the drawn image
